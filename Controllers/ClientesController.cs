@@ -74,6 +74,6 @@ public class ClientesController : ControllerBase
 
         ClienteRepositorio.Instancia().Lista.Remove(clienteDb);
 
-        return RedirectToAction(nameof(Index));
+        return StatusCode(204);
     }
 }
