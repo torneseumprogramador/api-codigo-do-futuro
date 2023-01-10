@@ -14,7 +14,7 @@ public class ClienteRepositorioMySql : IServico
 
     private string? conexao = null;
 
-    public List<Cliente> Todos()
+    public async Task<List<Cliente>> TodosAsync()
     {
         var lista = new List<Cliente>();
         using(var conn = new MySqlConnection(conexao))
@@ -23,7 +23,7 @@ public class ClienteRepositorioMySql : IServico
             var query = $"select * from clientes";
 
             var command = new MySqlCommand(query, conn);
-            var dr = command.ExecuteReader();
+            var dr = await command.ExecuteReaderAsync();
             while(dr.Read())
             {
                 lista.Add(new Cliente{
@@ -41,7 +41,7 @@ public class ClienteRepositorioMySql : IServico
         return lista;
     }
 
-    public void Incluir(Cliente cliente)
+    public async Task IncluirAsync(Cliente cliente)
     {
         using(var conn = new MySqlConnection(conexao))
         {
@@ -52,7 +52,7 @@ public class ClienteRepositorioMySql : IServico
             command.Parameters.Add(new MySqlParameter("@telefone", cliente.Telefone));
             command.Parameters.Add(new MySqlParameter("@email", cliente.Email));
             command.Parameters.Add(new MySqlParameter("@endereco", cliente.Endereco));
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync();
 
             // caso queira trabalhar com o ID retornado 
             // int id = Convert.ToInt32(command.ExecuteScalar());
@@ -60,7 +60,7 @@ public class ClienteRepositorioMySql : IServico
         }
     }
 
-    public Cliente Atualizar(Cliente cliente)
+    public async Task<Cliente> AtualizarAsync(Cliente cliente)
     {
        using(var conn = new MySqlConnection(conexao))
         {
@@ -72,7 +72,7 @@ public class ClienteRepositorioMySql : IServico
             command.Parameters.Add(new MySqlParameter("@telefone", cliente.Telefone));
             command.Parameters.Add(new MySqlParameter("@email", cliente.Email));
             command.Parameters.Add(new MySqlParameter("@endereco", cliente.Endereco));
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync();
 
             conn.Close();
         }
@@ -80,7 +80,7 @@ public class ClienteRepositorioMySql : IServico
         return cliente;
     }
 
-    public void Apagar(Cliente cliente)
+    public async Task ApagarAsync(Cliente cliente)
     {
         using(var conn = new MySqlConnection(conexao))
         {
@@ -88,7 +88,7 @@ public class ClienteRepositorioMySql : IServico
             var query = $"delete from clientes where id = @id;";
             var command = new MySqlCommand(query, conn);
             command.Parameters.Add(new MySqlParameter("@id", cliente.Id));
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync();
             conn.Close();
         }
     }

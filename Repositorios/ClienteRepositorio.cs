@@ -7,17 +7,18 @@ public class ClienteRepositorio : IServico
 {
     private static List<Cliente> lista = new List<Cliente>();
 
-    public List<Cliente> Todos()
+    public async Task<List<Cliente>> TodosAsync()
     {
-        return lista;
+        return await Task.FromResult(lista);
     }
 
-    public void Incluir(Cliente cliente)
+    public async Task IncluirAsync(Cliente cliente)
     {
         lista.Add(cliente);
+        await Task.FromResult(new {});
     }
 
-    public Cliente Atualizar(Cliente cliente)
+    public async Task<Cliente> AtualizarAsync(Cliente cliente)
     {
         if(cliente.Id == 0) throw new Exception("Id não pode ser zero");
 
@@ -31,11 +32,12 @@ public class ClienteRepositorio : IServico
         clienteDb.Endereco = cliente.Endereco;
         clienteDb.Telefone = cliente.Telefone;
         clienteDb.Email = cliente.Email;
-        return clienteDb;
+        return await Task.FromResult(clienteDb);
     }
 
-    public void Apagar(Cliente cliente)
+    public async Task ApagarAsync(Cliente cliente)
     {
         lista.Remove(cliente);
+        await Task.FromResult(new {});
     }
 }
