@@ -1,9 +1,11 @@
 using api.ModelViews;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers;
 
 [ApiController]
+[AllowAnonymous]
 public class HomeController : ControllerBase
 {
     [Route("/")]

@@ -1,26 +1,29 @@
-using api.DTOs;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using api.ModelViews;
-using Jose;
+using Microsoft.IdentityModel.Tokens;
 
 namespace api.Servicos.Autenticacao;
 
 public class TokenJWT
 {
-    public static string Builder(AdministradorLogado AdministradorLogado)
+    public readonly static string Key = "SEGREDO_do_CoDigoDO-Futuro";
+    public static string Builder(AdministradorLogado administradorLogado)
     {
-        var key = "SEGREDO_do_CoDigoDO-Futuro";
-
-        var payload = new AdministradorJwtDTO
+        var key = Encoding.ASCII.GetBytes(TokenJWT.Key);
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var tokenDescriptor = new SecurityTokenDescriptor()
         {
-           Id = AdministradorLogado.Id,
-           Email = AdministradorLogado.Email,
-           Permissao = AdministradorLogado.Permissao,
-           Expiracao = DateTime.Now.AddDays(2)
+            Subject = new ClaimsIdentity(new Claim[]{
+                new Claim(ClaimTypes.Name, administradorLogado.Nome),
+                new Claim(ClaimTypes.Role, administradorLogado.Permissao),
+            }),
+            Expires = DateTime.UtcNow.AddHours(2),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
-
-        string token = Jose.JWT.Encode(payload, key, JwsAlgorithm.none);
-
-        return token;
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
     }
 
 }

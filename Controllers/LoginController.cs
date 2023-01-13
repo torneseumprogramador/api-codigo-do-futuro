@@ -5,6 +5,7 @@ using api.Repositorios.Interfaces;
 using api.DTOs;
 using api.Servicos;
 using api.Servicos.Autenticacao;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers;
 
@@ -17,6 +18,7 @@ public class LoginController : ControllerBase
     }
     // GET: Clientes
     [HttpPost("/login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] AdministradorDTO administradorDTO)
     {
         if(string.IsNullOrEmpty(administradorDTO.Email) || string.IsNullOrEmpty(administradorDTO.Senha))

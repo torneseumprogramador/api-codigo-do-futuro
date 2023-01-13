@@ -1,15 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
-using api.ModelViews;
 using api.Models;
 using api.Repositorios.Interfaces;
 using api.DTOs;
 using api.Servicos;
-using api.Filtros;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers;
 
 [Route("clientes")]
-[Logado]
+[ApiController]
 public class ClientesController : ControllerBase
 {
     private IServico<Cliente> _servico;
@@ -19,7 +18,7 @@ public class ClientesController : ControllerBase
     }
     // GET: Clientes
     [HttpGet("")]
-    [Permissao(Nivel = "adm,editor")]
+    [Authorize(Roles = "adm,editor")]
     public async Task<IActionResult> Index()
     {
         var clientes = await _servico.TodosAsync();
@@ -27,7 +26,7 @@ public class ClientesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [Permissao(Nivel = "editor")]
+    [Authorize(Roles = "adm,editor")]
     public async Task<IActionResult> Details([FromRoute] int id)
     {
        var cliente = (await _servico.TodosAsync()).Find(c => c.Id == id);
@@ -38,6 +37,7 @@ public class ClientesController : ControllerBase
     
     // POST: Clientes
     [HttpPost("")]
+    [Authorize(Roles = "adm,editor")]
     public async Task<IActionResult> Create([FromBody] ClienteDTO clienteDTO)
     {
         var cliente = BuilderServico<Cliente>.Builder(clienteDTO);
@@ -48,6 +48,7 @@ public class ClientesController : ControllerBase
 
     // PUT: Clientes/5
     [HttpPut("{id}")]
+    [Authorize(Roles = "adm")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] Cliente cliente)
     {
         if (id != cliente.Id)
@@ -62,8 +63,9 @@ public class ClientesController : ControllerBase
         return StatusCode(200, clienteDb);
     }
 
-    // POST: Clientes/5
+    // DELETE: Clientes/5
     [HttpDelete("{id}")]
+    [Authorize(Roles = "adm")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         var clienteDb = (await _servico.TodosAsync()).Find(c => c.Id == id);
