@@ -12,8 +12,6 @@ public class ClienteRepositorioEntity : IServico<Cliente>
         contexto = new ContextoEntity();
     }
 
-    private string? conexao = null;
-
     public async Task<List<Cliente>> TodosAsync()
     {
         return await contexto.Clientes.ToListAsync();

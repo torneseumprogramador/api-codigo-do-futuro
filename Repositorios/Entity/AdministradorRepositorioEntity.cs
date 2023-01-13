@@ -12,8 +12,6 @@ public class AdministradorRepositorioEntity : IServicoAdm<Administrador>
         contexto = new ContextoEntity();
     }
 
-    private string? conexao = null;
-
     public async Task<List<Administrador>> TodosAsync()
     {
         return await contexto.Administradores.ToListAsync();
