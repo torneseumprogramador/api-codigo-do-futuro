@@ -1,5 +1,6 @@
 using api.Models;
 using api.ModelViews;
+using api.Repositorios.Entity;
 using api.Repositorios.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // builder.Services.AddScoped<IServico, ClienteRepositorio>();
 // builder.Services.AddScoped<IServico, ClienteRepositorioMySql>();
-builder.Services.AddScoped<IServico, ClienteRepositorioEntity>();
+builder.Services.AddScoped<IServicoAdm<Administrador>, AdministradorRepositorioEntity>();
+builder.Services.AddScoped<IServico<Cliente>, ClienteRepositorioEntity>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

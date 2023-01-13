@@ -2,9 +2,9 @@ using api.Models;
 using api.Repositorios.Interfaces;
 using MySql.Data.MySqlClient;
 
-namespace api.ModelViews;
+namespace api.Repositorios;
 
-public class ClienteRepositorioMySql : IServico
+public class ClienteRepositorioMySql : IServico<Cliente>
 {
     public ClienteRepositorioMySql()
     {

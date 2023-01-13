@@ -4,19 +4,22 @@ using api.Models;
 using api.Repositorios.Interfaces;
 using api.DTOs;
 using api.Servicos;
+using api.Filtros;
 
 namespace api.Controllers;
 
 [Route("clientes")]
+[Logado]
 public class ClientesController : ControllerBase
 {
-    private IServico _servico;
-    public ClientesController(IServico servico)
+    private IServico<Cliente> _servico;
+    public ClientesController(IServico<Cliente> servico)
     {
         _servico = servico;
     }
     // GET: Clientes
     [HttpGet("")]
+    [Permissao(Nivel = "adm,editor")]
     public async Task<IActionResult> Index()
     {
         var clientes = await _servico.TodosAsync();
@@ -24,6 +27,7 @@ public class ClientesController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Permissao(Nivel = "editor")]
     public async Task<IActionResult> Details([FromRoute] int id)
     {
        var cliente = (await _servico.TodosAsync()).Find(c => c.Id == id);

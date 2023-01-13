@@ -2,10 +2,10 @@ using api.Models;
 
 namespace api.Repositorios.Interfaces;
 
-public interface IServico
+public interface IServico<T>
 {
-    Task<List<Cliente>> TodosAsync();
-    Task IncluirAsync(Cliente cliente);
-    Task<Cliente> AtualizarAsync(Cliente cliente);
-    Task ApagarAsync(Cliente cliente);
+    Task<List<T>> TodosAsync();
+    Task IncluirAsync(T obj);
+    Task<T> AtualizarAsync(T obj);
+    Task ApagarAsync(T obj);
 }

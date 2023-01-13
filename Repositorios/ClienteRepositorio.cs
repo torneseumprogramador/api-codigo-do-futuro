@@ -1,9 +1,9 @@
 using api.Models;
 using api.Repositorios.Interfaces;
 
-namespace api.ModelViews;
+namespace api.Repositorios;
 
-public class ClienteRepositorio : IServico
+public class ClienteRepositorio : IServico<Cliente>
 {
     private static List<Cliente> lista = new List<Cliente>();
 
