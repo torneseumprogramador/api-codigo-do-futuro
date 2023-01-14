@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema; 
+    
 namespace api.Models;
 
+[Table("administradores")]
 public record Administrador
 {
     public int Id { get;set; } = default!;
